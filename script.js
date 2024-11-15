@@ -1,3 +1,4 @@
+// Get computer's choice randomly
 function getComputerChoice() {
     const randomNumber = Math.random();
     if (randomNumber < 0.34) {
@@ -9,54 +10,50 @@ function getComputerChoice() {
     }
 }
 
-
-function getHumanChoice() {
-    let choice = prompt("Enter your choice (rock, paper, or scissors):");
-    return choice ? choice.toLowerCase() : ""; // Ensure lowercase for case insensitivity
-}
-
-// Score variables
+// Variables to keep track of the score
 let humanScore = 0;
 let computerScore = 0;
 
 // Function to play a single round
 function playRound(humanChoice, computerChoice) {
+    let result = "";
     if (humanChoice === computerChoice) {
-        console.log(`It's a tie! You both chose ${humanChoice}.`);
-        return;
-    }
-
-    if (
+        result = `It's a tie! You both chose ${humanChoice}.`;
+    } else if (
         (humanChoice === "rock" && computerChoice === "scissors") ||
         (humanChoice === "paper" && computerChoice === "rock") ||
         (humanChoice === "scissors" && computerChoice === "paper")
     ) {
-        console.log(`You win! ${humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1)} beats ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}.`);
+        result = `You win! ${humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1)} beats ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}.`;
         humanScore++;
     } else {
-        console.log(`You lose! ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)} beats ${humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1)}.`);
+        result = `You lose! ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)} beats ${humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1)}.`;
         computerScore++;
     }
+
+    // Update the result and scores in the DOM
+    document.getElementById("result").textContent = result;
+    document.getElementById("humanScore").textContent = humanScore;
+    document.getElementById("computerScore").textContent = computerScore;
 }
 
-// Function to play the entire game
-function playGame() {
-    for (let i = 0; i < 5; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-    }
-
-    console.log(`Final Score: You - ${humanScore}, Computer - ${computerScore}`);
-    
-    if (humanScore > computerScore) {
-        console.log("Congratulations! You are the overall winner!");
-    } else if (humanScore < computerScore) {
-        console.log("Sorry! The computer is the overall winner.");
-    } else {
-        console.log("It's a tie overall!");
-    }
+// Function to handle the user's choice
+function handleUserChoice(choice) {
+    const computerChoice = getComputerChoice();
+    playRound(choice, computerChoice);
 }
 
-// Start the game
-playGame();
+// Function to restart the game
+function restartGame() {
+    humanScore = 0;
+    computerScore = 0;
+    document.getElementById("humanScore").textContent = humanScore;
+    document.getElementById("computerScore").textContent = computerScore;
+    document.getElementById("result").textContent = "";
+}
+
+// Adding event listeners to buttons
+document.getElementById("rock").addEventListener("click", () => handleUserChoice("rock"));
+document.getElementById("paper").addEventListener("click", () => handleUserChoice("paper"));
+document.getElementById("scissors").addEventListener("click", () => handleUserChoice("scissors"));
+document.getElementById("restartBtn").addEventListener("click", restartGame); // Restart game button
