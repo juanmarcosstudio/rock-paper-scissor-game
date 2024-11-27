@@ -38,6 +38,7 @@ button {
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
+    color: rgb(236, 236, 236);
 }
 
 /* Rock, Paper, Scissors buttons with distinct colors */
